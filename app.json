@@ -1,0 +1,14 @@
+﻿{
+  "name": "testapi",
+  "domain": "testapi.local",
+  "port": 5100,
+  "repository": "https://github.com/yourusername/testapi.git",
+  "branch": "main",
+  "dotnetVersion": "10.0",
+  "buildCommand": "dotnet publish -c Release -o ./publish",
+  "startCommand": "dotnet TestApi.dll",
+  "environmentVariables": {
+    "ASPNETCORE_ENVIRONMENT": "Production",
+    "ASPNETCORE_URLS": "http://0.0.0.0:5100"
+  }
+}
