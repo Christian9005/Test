@@ -2,7 +2,7 @@
   "name": "testapi",
   "domain": "testapi.local",
   "port": 5100,
-  "repository": "https://github.com/yourusername/testapi.git",
+  "repository": "https://github.com/Christian9005/Test.git",
   "branch": "main",
   "dotnetVersion": "10.0",
   "buildCommand": "dotnet publish -c Release -o ./publish",
