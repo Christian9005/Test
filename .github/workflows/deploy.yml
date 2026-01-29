@@ -1,0 +1,51 @@
+name: Deploy TestApi
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  check-commit:
+    name: Validate Commit Message
+    runs-on: ubuntu-latest
+    outputs:
+      should-deploy: ${{ steps.check.outputs.should-deploy }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Check commit message for deploy keyword
+        id: check
+        run: |
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          
+          if echo "$COMMIT_MESSAGE" | grep -iE "^deploy|deploy:" || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "should-deploy=true" >> $GITHUB_OUTPUT
+            echo "✓ Deploy keyword found in commit"
+          else
+            echo "should-deploy=false" >> $GITHUB_OUTPUT
+            echo "ℹ No deploy in commit message. Use 'deploy: ...' to trigger deployment"
+          fi
+
+  deploy:
+    name: Deploy to Zimaboard
+    runs-on: ubuntu-latest
+    if: needs.check-commit.outputs.should-deploy == 'true'
+    needs: check-commit
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy with DotDeploy
+        uses: Christian9005/DotDeploy@main
+        with:
+          app-name: testapi
+          repository: https://github.com/Christian9005/Test.git
+          branch: main
+          zimaboard-host: ${{ secrets.ZIMABOARD_HOST }}
+          deploy-token: ${{ secrets.DEPLOY_TOKEN }}
+          port: '5100'
