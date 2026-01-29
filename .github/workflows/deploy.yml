@@ -43,9 +43,9 @@ jobs:
       - name: Deploy with DotDeploy
         uses: Christian9005/DotDeploy@main
         with:
-          app-name: testapi
+          host: https://dotdeploy.codemeshdynamics.me
+          app: testapi
           repository: https://github.com/Christian9005/Test.git
           branch: main
-          zimaboard-host: ${{ secrets.ZIMABOARD_HOST }}
-          deploy-token: ${{ secrets.DEPLOY_TOKEN }}
-          port: '5100'
+          token: ${{ secrets.DEPLOY_TOKEN }}
+          app-port: '5100'
